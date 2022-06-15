@@ -5,15 +5,18 @@ module GitDate
     attr_reader :time
 
     EDGES = {
-      'hour' => '%F %H:00:00',
-      'day' => '%F',
-      'week' => '%Y %U',
-      'month' => '%Y-%m',
+      'hour' => ->(t){ Time.parse(t.strftime('%F %H:00:00')) },
+      'day' => ->(t){ Time.parse(t.strftime('%F 00:00:00')) },
+      'week' => ->(t){ Time.parse((t - ((t.wday - 1) * 24 * 60 * 60)).strftime('%F 00:00:00')) },
+      'month' => ->(t){ Time.parse(t.strftime('%Y-%m-01 00:00:00')) }
     }
 
     class << self
-      def edge
-        edge_name = Thread.current[:git_date_edge] || ENV['GIT_DATE_EDGE'] || 'day'
+      def edge_name
+        Thread.current[:git_date_edge] || ENV['GIT_DATE_EDGE'] || 'day'
+      end
+
+      def edge_format
         EDGES[edge_name]
       end
     end

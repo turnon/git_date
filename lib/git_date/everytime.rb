@@ -11,7 +11,7 @@ module GitDate
     DEL = /^D\s+/
 
     def initialize
-      @edge = TimePoint.edge
+      @edge = TimePoint.edge_format
       @last = nil
 
       @enum = Enumerator.new do |e|
@@ -44,7 +44,7 @@ module GitDate
 
     def parse_time(line)
       time_str = line.sub(/^Date:\s+/, '')
-      Time.parse(time_str).strftime(@edge)
+      @edge[Time.parse(time_str)]
     end
   end
 end
