@@ -4,6 +4,20 @@ module GitDate
   class TimePoint
     attr_reader :time
 
+    EDGES = {
+      'hour' => '%F %H:00:00',
+      'day' => '%F',
+      'week' => '%Y %U',
+      'month' => '%Y-%m',
+    }
+
+    class << self
+      def edge
+        edge_name = Thread.current[:git_date_edge] || ENV['GIT_DATE_EDGE'] || 'day'
+        EDGES[edge_name]
+      end
+    end
+
     def initialize(time)
       @time = time
       @adds = Set.new

@@ -6,19 +6,12 @@ module GitDate
   class Everytime
     include Enumerable
 
-    Edges = {
-      'hour' => '%F %H:00:00',
-      'day' => '%F',
-      'week' => '%Y %U',
-      'month' => '%Y-%m',
-    }
-
     ADD = /^A\s+/
     MOD = /^M\s+/
     DEL = /^D\s+/
 
     def initialize
-      @edge = Edges[ENV['GITDAY_DURATION'] || 'day']
+      @edge = TimePoint.edge
       @last = nil
 
       @enum = Enumerator.new do |e|
