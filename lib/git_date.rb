@@ -1,10 +1,10 @@
 require "git_date/version"
-require "git_date/everytime"
+require "git_date/contiunuous_time"
 
 module GitDate
   class << self
     def each
-      Everytime.new.each do |obj|
+      ContinunousTime.new.each do |obj|
         yield obj.to_h
       end
     end
