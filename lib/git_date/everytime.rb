@@ -13,6 +13,10 @@ module GitDate
       'month' => '%Y-%m',
     }
 
+    ADD = /^A\s+/
+    MOD = /^M\s+/
+    DEL = /^D\s+/
+
     def initialize
       @edge = Edges[ENV['GITDAY_DURATION'] || 'day']
       @last = nil
@@ -26,11 +30,13 @@ module GitDate
             next if this_time == @last.time
             e << @last
             @last = TimePoint.new(this_time)
-          when /^M\s+/
-            @last.mod(line.sub(/^M\s+/, ''))
+          when MOD
+            @last.mod(line.sub(MOD, ''))
           when /^R[0-9]+\s/
-          when /^A\s+/
-            @last.add(line.sub(/^A\s+/, ''))
+          when ADD
+            @last.add(line.sub(ADD, ''))
+          when DEL
+            @last.del(line.sub(DEL, ''))
           end
         end
       end
