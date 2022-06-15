@@ -4,7 +4,8 @@ module GitDate
 
     def initialize
       @enum = Enumerator.new do |e|
-        `git -C /Users/ttt/projects/obsd log --name-status`.each_line do |line|
+        repo = Thread.current[:git_date_repo]
+        `git -C #{repo} log --name-status`.each_line do |line|
           e << line
         end
       end
