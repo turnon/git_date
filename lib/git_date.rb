@@ -12,6 +12,7 @@ module GitDate
     def initialize(**opt)
       Thread.current[:git_date_edge] = opt[:edge] || ENV['GIT_DATE_EDGE'] || 'day'
       Thread.current[:git_date_repo] = opt[:repo] || ENV['GIT_DATE_REPO'] || '.'
+      Thread.current[:git_date_since] = opt[:since] || ENV['GIT_DATE_SINCE']
 
       @list = ContinunousTime.new
     end
